@@ -1,30 +1,50 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel, Field
 from datetime import datetime, timedelta
 import json
 import redis
 import logging
 import grpc
+from proto import grpc_pb2_grpc, grpc_pb2
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
-from starlette.requests import Request
-
-from proto import grpc_pb2, grpc_pb2_grpc
+from contextlib import asynccontextmanager
 
 # Configuração do logging
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 
-# Inicializa o FastAPI
-app = FastAPI()
+# Função de lifespan para gerenciar inicialização e encerramento
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    logging.info("Iniciando o servidor FastAPI...")
+    r = redis.Redis(host="localhost", port=6379, db=0)
+    logging.info("Limpando o Redis ao iniciar o servidor...")
+    r.flushdb()  
+    logging.info("Redis limpo com sucesso.")
+
+    yield  
+
+    logging.info("Encerrando o servidor FastAPI...")
+    r.close()  
+    logging.info("Conexão com o Redis fechada.")
+
+app = FastAPI(lifespan=lifespan)
+# app = FastAPI()
 
 # Conectando ao Redis
 r = redis.Redis(host="localhost", port=6379, db=0)
 
 # Configurar templates para HTML
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
-# Modelos Pydantic
+# Função para limpar o Redis ao iniciar o servidor
+@app.on_event("startup")
+def startup_event():
+    logging.info("Limpando o Redis ao iniciar o servidor...")
+    r.flushdb()  
+    logging.info("Redis limpo com sucesso.")
+
 class DeviceMessage(BaseModel):
     name: str
     device_id: str
@@ -49,9 +69,6 @@ def serve_dashboard(request: Request):
 
 @app.get("/device")
 def get_devices():
-    """
-    Retorna a lista dos dispositivos registrados com todas as informações relevantes.
-    """
     devices = []
     for key in r.keys():
         device_data = json.loads(r.get(key))
@@ -107,9 +124,7 @@ def update_liveness_probe(liveness_probe: LivenessProbe):
 
 @app.post("/control_device")
 def control_device(config: ControlDeviceMessage):
-    """
-    Envia um comando ao dispositivo via gRPC e atualiza o estado local no Redis.
-    """
+    
     if not r.exists(config.device_id):
         raise HTTPException(404, {"message": "Dispositivo não existe!"})
     device = json.loads(r.get(config.device_id))

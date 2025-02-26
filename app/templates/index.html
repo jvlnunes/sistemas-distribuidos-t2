@@ -1,17 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Devices Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
     <style>
-        /* ===================== Base e Variáveis ===================== */
         * {
             box-sizing: border-box;
         }
-
         :root {
             --app-bg: #101827;
             --sidebar: rgba(21, 30, 47, 1);
@@ -27,7 +24,6 @@
             --filter-reset: #2c394f;
             --filter-shadow: rgba(16, 24, 39, 0.8) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
         }
-
         body,
         html {
             margin: 0;
@@ -35,7 +31,6 @@
             height: 100%;
             width: 100%;
         }
-
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--app-bg);
@@ -43,8 +38,6 @@
             -moz-osx-font-smoothing: grayscale;
             overflow: hidden;
         }
-
-        /* ===================== Container Principal ===================== */
         .app-container {
             width: 100%;
             height: 100%;
@@ -54,8 +47,6 @@
             max-width: 1280px;
             margin: 0 auto;
         }
-
-        /* ===================== Sidebar ===================== */
         .sidebar {
             flex-basis: 200px;
             max-width: 200px;
@@ -63,30 +54,24 @@
             display: flex;
             flex-direction: column;
         }
-
         .sidebar-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 16px;
         }
-
         .app-icon {
             color: var(--sidebar-main-color);
         }
-
-        /* Exibe a imagem do app mantendo proporção retangular */
         .app-icon img {
             width: 100%;
             height: auto;
             border-radius: 4px;
         }
-
         .sidebar-list {
             list-style: none;
             padding: 0;
         }
-
         .sidebar-list-item a {
             display: flex;
             align-items: center;
@@ -96,16 +81,13 @@
             font-size: 14px;
             line-height: 24px;
         }
-
         .sidebar-list-item:hover {
             background-color: var(--sidebar-hover-link);
         }
-
         .sidebar-list-item.active {
             background-color: var(--sidebar-active-link);
             position: relative;
         }
-
         .sidebar-list-item.active:before {
             content: '';
             position: absolute;
@@ -114,7 +96,6 @@
             height: 100%;
             width: 4px;
         }
-
         .account-info {
             display: flex;
             align-items: center;
@@ -122,7 +103,6 @@
             margin-top: auto;
             cursor: pointer;
         }
-
         .account-info-picture {
             width: 32px;
             height: 32px;
@@ -130,13 +110,11 @@
             overflow: hidden;
             flex-shrink: 0;
         }
-
         .account-info-picture img {
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
-
         .account-info-name {
             font-size: 14px;
             color: var(--sidebar-main-color);
@@ -145,14 +123,12 @@
             text-overflow: ellipsis;
             white-space: nowrap;
         }
-
         .account-info-more {
             background: none;
             border: none;
             color: var(--sidebar-main-color);
             margin-left: auto;
         }
-
         .team-details {
             display: none;
             padding: 8px 16px;
@@ -160,8 +136,6 @@
             color: var(--sidebar-main-color);
             background-color: var(--sidebar-hover-link);
         }
-
-        /* ===================== App Content ===================== */
         .app-content {
             flex: 1;
             background-color: var(--app-bg);
@@ -170,20 +144,17 @@
             flex-direction: column;
             overflow: auto;
         }
-
         .app-content-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             padding: 0 4px;
         }
-
         .app-content-headerText {
             font-size: 24px;
             color: var(--app-content-main-color);
             margin: 0;
         }
-
         .refresh-btn {
             cursor: pointer;
             background: none;
@@ -191,92 +162,69 @@
             color: var(--app-content-main-color);
             font-size: 28px;
         }
-
         .refresh-btn:active {
             transform: scale(0.95);
             opacity: 0.8;
         }
-
-        /* ===================== Device Cards (Lista Vertical) ===================== */
         .devices-container {
             display: block;
             margin-top: 20px;
         }
-
         .device-card {
             background-color: var(--app-content-secondary-color);
-            border-radius: 8px;
-            padding: 16px;
-            width: 100%;
-            max-width: 600px;
-            margin-bottom: 16px;
-            color: var(--app-content-main-color);
-            transition: all 0.3s;
-            cursor: pointer;
-            position: relative;
-            display: flex;
+            color           : var(--app-content-main-color);
+            border-radius   : 8px;
+            padding         : 16px;
+            width           : 100%;
+            max-width       : 600px;
+            margin-bottom   : 16px;
+            transition : all 0.5s;
+            cursor     : pointer;
+            position   : relative;
+            display    : flex;
             align-items: center;
-            /* Alinhar verticalmente os itens */
-            min-height: 100px;
-            /* Altura mínima do card */
+            min-height: 50px;
         }
-
         .device-card.open {
             flex-direction: column;
         }
-
         .device-icon {
             flex-shrink: 0;
             width: 48px;
             height: 48px;
             margin-right: 16px;
-            /* Espaçamento entre o ícone e o conteúdo */
         }
-
         .device-icon img {
             width: 100%;
             height: 100%;
             object-fit: contain;
         }
-
         .device-info-container {
             flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            /* Centralizar verticalmente o conteúdo */
         }
-
         .device-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            /* Alinhar verticalmente os itens */
             width: 100%;
             margin-bottom: 8px;
-            /* Espaçamento entre o header e os detalhes */
         }
-
         .device-name {
             font-size: 16px;
             font-weight: 500;
-            margin-right: 16px;
-            /* Espaçamento entre o nome e a info específica */
-            flex: 1;
-            /* Ocupar o espaço disponível */
+            margin-right: 16px;            
+            flex: 1;            
         }
-
         .device-specific-info {
             font-size: 14px;
             display: flex;
-            align-items: center;
-            /* Alinhar verticalmente com o nome e o status */
-            margin-right: 16px;
-            /* Espaçamento entre a info específica e o status */
-            min-width: 120px;
-            /* Largura mínima para evitar desalinhamento */
+            align-items: center;            
+            margin-right: 16px;            
+            min-width: 120px;            
         }
-
         .device-status {
             padding: 4px 8px;
             border-radius: 4px;
@@ -284,59 +232,47 @@
             font-weight: bold;
             color: #fff;
             white-space: nowrap;
-            flex-shrink: 0;
-            /* Impedir que o status diminua de tamanho */
+            flex-shrink: 0;           
         }
-
         .device-status.on {
             background-color: green;
         }
-
         .device-status.off {
             background-color: red;
-        }
-
-        /* Detalhes do card com duas colunas: esquerda (informações) e direita (botão de Ações) */
+        }        
         .device-details {
             display: none;
             margin-top: 10px;
             width: 100%;
         }
-
         .device-card.open .device-details {
             display: block;
         }
-
         .details-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
-
         .details-left {
-            text-align: left;
+            flex: 1;
         }
-
-        .details-right {
-            text-align: right;
-        }
-
         .action-btn {
-            /* background-color: var(--action-color); */
-            background-color: #355fc000;;
+            background-color: #2f3d5e;
             color: #fff;
             border: none;
             padding: 8px 12px;
             border-radius: 4px;
             cursor: pointer;
             font-size: 12px;
+            margin-left: 16px;       
         }
-
         .action-btn:hover {
-            background-color: var(--action-color-hover);
+            background-color: #27325f79;
         }
-
-        /* ===================== Modal ===================== */
+        .edit-btn {
+            margin-top: 30px;
+        }        
         .modal {
             display: none;
             position: fixed;
@@ -349,7 +285,6 @@
             overflow: auto;
             padding-top: 60px;
         }
-
         .modal-content {
             background-color: var(--app-content-secondary-color);
             margin: 5% auto;
@@ -360,7 +295,6 @@
             position: relative;
             color: var(--app-content-main-color);
         }
-
         .modal-close {
             position: absolute;
             top: 10px;
@@ -371,22 +305,18 @@
             font-size: 24px;
             cursor: pointer;
         }
-
         .modal h2 {
             margin-top: 0;
             font-size: 20px;
         }
-
         .modal-section {
             margin: 15px 0;
         }
-
         .modal-section label {
             display: block;
             margin-bottom: 5px;
             font-size: 14px;
         }
-
         .modal-section input[type="color"],
         .modal-section input[type="number"] {
             width: 100%;
@@ -395,7 +325,6 @@
             border-radius: 4px;
             font-size: 14px;
         }
-
         .mode-switch {
             background: none;
             border: none;
@@ -404,15 +333,12 @@
             display: flex;
             align-items: center;
         }
-
         .mode-switch .moon {
             fill: var(--app-content-main-color);
         }
-
         .mode-switch.active .moon {
             fill: none;
         }
-
         .action-button {
             border-radius: 4px;
             height: 32px;
@@ -426,17 +352,13 @@
             align-items: center;
             padding: 0 8px;
         }
-
         .color-box {
             display: inline-block;
             width: 16px;
             height: 16px;
             border: 1px solid #fff;
-            margin-left: 8px;
-            /* Espaçamento entre o texto e o quadrado de cor */
-        }
-
-        /* Estilos para o dropdown de ordenação */
+            margin-left: 8px;           
+        }        
         #sortFilter {
             padding: 5px;
             border-radius: 4px;
@@ -444,18 +366,14 @@
             color: var(--app-content-main-color);
             border: 1px solid var(--table-border);
             margin-right: 10px;
-        }
-
-        /* Estilos para o container do README */
+        }        
         .readme-container {
             padding: 16px;
             color: var(--app-content-main-color);
         }
-
         .readme-container h2 {
             margin-top: 0;
         }
-
         .readme-container p {
             line-height: 1.6;
         }
@@ -464,7 +382,6 @@
 
 <body>
     <div class="app-container">
-        <!-- Sidebar -->
         <div class="sidebar">
             <div class="sidebar-header">
                 <div class="app-icon">
@@ -497,21 +414,19 @@
             </div>
             <div class="team-details" id="teamDetails">
                 <p><strong>Equipe:</strong></p>
-                <p>João Victor Nunes</p>
-                <p>Thomaz</p>
-                <p>Breno Macedo</p>
-                <p>Gustavo Valença</p>
-                <p>Felipe</p>
+                <p>Breno Macedo    - 514513</p>
+                <p>João V Nunes    - 414957</p>
+                <p>Thomaz Ângelo   - 509299</p>
+                <p>Felipe Duarte   - 509067</p>
+                <p>Gustavo Valença - 508016</p>
             </div>
         </div>
-        <!-- Fim Sidebar -->
-        <!-- Conteúdo Principal -->
         <div class="app-content">
             <div class="app-content-header">
                 <h1 class="app-content-headerText">Devices Dashboard</h1>
                 <div>
                     <select id="sortFilter" onchange="sortDevices()">
-                        <option value="device_type">Ordenar por Tipo</option>
+                        <option value="type">Ordenar por Tipo</option>
                         <option value="name">Ordenar por Nome</option>
                         <option value="status">Ordenar por Status</option>
                     </select>
@@ -576,7 +491,6 @@
                 <p></p>
                 <p> - OBS: Mais de um dispositivo do mesmo tipo pode se conectar, pois eles podem ter Nomes e ids
                     diferentes</p>
-
             </div>
         </div>
     </div>
@@ -585,6 +499,10 @@
             <button class="modal-close" onclick="closeModal()">×</button>
             <h2 id="modalDeviceName"></h2>
             <div id="modalActions">
+            </div>
+            <div style="text-align: right; margin-top: 20px;">
+                <button class="action-btn" onclick="confirmChanges()">Confirmar</button>
+                <button class="action-btn" onclick="closeModal()">Cancelar</button>
             </div>
         </div>
     </div>
@@ -595,83 +513,65 @@
             "RADIO": "https://img.icons8.com/fluency/48/000000/radio.png",
             "AIR_CONDITIONING": "https://img.icons8.com/fluency/48/000000/air-conditioner.png"
         };
+        let currentDevice = null;
 
         async function loadDevices() {
             try {
                 const response = await fetch("/device");
                 const devices = await response.json();
                 const container = document.getElementById("deviceContainer");
-
                 container.innerHTML = "";
-
                 devices.forEach(device => {
                     const card = document.createElement("div");
                     card.className = "device-card";
                     card.setAttribute("data-device-id", device.device_id);
-
                     const iconUrl = deviceIcons[device.device_type] || deviceIcons["default"];
                     const iconElem = document.createElement("div");
                     iconElem.className = "device-icon";
                     iconElem.innerHTML = `<img src="${iconUrl}" alt="${device.device_type}">`;
-
                     const header = document.createElement("div");
                     header.className = "device-header";
-
                     const nameElem = document.createElement("div");
                     nameElem.className = "device-name";
                     nameElem.innerText = device.name;
-
                     const specificInfo = document.createElement("div");
                     specificInfo.className = "device-specific-info";
-
                     if (device.device_type === "LAMP") {
                         const color = `#${device.status.color.map(c => c.toString(16).padStart(2, '0')).join('')}`;
                         specificInfo.innerHTML = `<p><strong>Cor:</strong> <span class="color-box" style="background-color: ${color};"></span></p>`;
-
                     } else if (device.device_type === "AIR_CONDITIONING") {
                         specificInfo.innerHTML = `<p><strong>Temperatura:</strong> ${device.status.temperature}°C</p>`;
-
                     } else if (device.device_type === "RADIO") {
                         specificInfo.innerHTML = `<p><strong>Música:</strong> ${device.status.playing_music}</p>`;
                     }
-
                     const statusElem = document.createElement("div");
                     statusElem.className = "device-status " + (device.status.powered_on ? "on" : "off");
                     statusElem.innerText = device.status.powered_on ? "On" : "Off";
-
                     header.appendChild(nameElem);
                     header.appendChild(specificInfo);
                     header.appendChild(statusElem);
-
                     const infoContainer = document.createElement("div");
                     infoContainer.className = "device-info-container";
                     infoContainer.appendChild(header);
-
                     const details = document.createElement("div");
                     details.className = "device-details";
                     details.innerHTML = `
                         <div class="details-row">
                             <div class="details-left">
-                            <p><strong>Tipo:</strong> ${device.device_type}</p>
-                            <p><strong>Último Sinal:</strong> ${new Date(device.last_liveness_probe).toLocaleString()}</p>
+                                <p><strong>Tipo:</strong> ${device.device_type}</p>
+                                <p><strong>Último Sinal:</strong> ${new Date(device.last_liveness_probe).toLocaleString()}</p>
                             </div>
-                            <div class="details-right">
-                            <button class="action-btn" onclick="openActionModal(event, '${encodeURIComponent(JSON.stringify(device))}')"><strong>Editar</button>
-                            </div>
+                            <button class="action-btn edit-btn" onclick="openActionModal(event, '${encodeURIComponent(JSON.stringify(device))}')"><strong>Editar</button>
                         </div>
-                        `;
-
+                    `;
                     infoContainer.appendChild(details);
-
                     card.appendChild(iconElem);
                     card.appendChild(infoContainer);
-
                     card.addEventListener("click", function (e) {
                         if (!e.target.classList.contains("action-btn")) {
                             toggleCard(card);
                         }
                     });
-
                     container.appendChild(card);
                 });
             } catch (error) {
@@ -690,50 +590,95 @@
 
         function openActionModal(event, deviceDataEncoded) {
             event.stopPropagation();
-            const device = JSON.parse(decodeURIComponent(deviceDataEncoded));
-            document.getElementById("modalDeviceName").innerText = device.name;
+            currentDevice = JSON.parse(decodeURIComponent(deviceDataEncoded));
+            document.getElementById("modalDeviceName").innerText = currentDevice.name;
             const modalActions = document.getElementById("modalActions");
-
             let content = `<div class="modal-section">
-                        <button class="action-btn" onclick="toggleDevice('${device.device_id}')">
-                          ${device.status.powered_on ? "Desligar" : "Ligar"}
+                        <button class="action-btn" onclick="toggleDevice('${currentDevice.device_id}')">
+                          ${currentDevice.status.powered_on ? "Desligar" : "Ligar"}
                         </button>
                      </div>`;
-            if (device.device_type === "LAMP") {
-                const currentColor = `#${device.status.color.map(c => c.toString(16).padStart(2, '0')).join('')}`;
+            if (currentDevice.device_type === "LAMP") {
+                const currentColor = `#${currentDevice.status.color.map(c => c.toString(16).padStart(2, '0')).join('')}`;
                 content += `<div class="modal-section">
                       <label for="colorPicker">Mudar Cor:</label>
-                      <input type="color" id="colorPicker" value="${currentColor}" onchange="changeLampColor('${device.device_id}', this.value)">
+                      <input type="color" id="colorPicker" value="${currentColor}" onchange="changeLampColor('${currentDevice.device_id}', this.value)">
                     </div>`;
-            } else if (device.device_type === "AIR_CONDITIONING") {
+            } else if (currentDevice.device_type === "AIR_CONDITIONING") {
                 content += `<div class="modal-section">
                       <label for="tempInput">Mudar Temperatura:</label>
-                      <input type="number" id="tempInput" value="${device.status.temperature || 22}" min="16" max="30" onchange="changeTemperature('${device.device_id}', this.value)">
+                      <input type="number" id="tempInput" value="${currentDevice.status.temperature || 22}" min="16" max="30" onchange="changeTemperature('${currentDevice.device_id}', this.value)">
                     </div>`;
             }
-
             modalActions.innerHTML = content;
             document.getElementById("actionModal").style.display = "block";
         }
 
         function closeModal() {
             document.getElementById("actionModal").style.display = "none";
+            currentDevice = null;
         }
 
-        function toggleDevice(deviceId) {
-            console.log(`Toggle power do dispositivo ${deviceId}`);
-            // Implemente a chamada ao backend para alternar o estado
+        function confirmChanges() {
+            if (!currentDevice) return;
+
+            const deviceId = currentDevice.device_id;
+            let command = currentDevice.status.powered_on ? "TURN_OFF" : "TURN_ON";
+            const params = [];
+
+            if (currentDevice.device_type === "LAMP") {
+                const colorPicker = document.getElementById("colorPicker");
+                if (colorPicker) {
+                    const color = colorPicker.value;
+                    const r = parseInt(color.substr(1, 2), 16);
+                    const g = parseInt(color.substr(3, 2), 16);
+                    const b = parseInt(color.substr(5, 2), 16);
+                    params.push(r, g, b);
+                    command = "CHANGE_COLOR";
+                }
+            } else if (currentDevice.device_type === "AIR_CONDITIONING") {
+                const tempInput = document.getElementById("tempInput");
+                if (tempInput) {
+                    const temperature = parseInt(tempInput.value);
+                    params.push(temperature);
+                    command = "INCREASE_TEMPERATURE"; // ou DECREASE_TEMPERATURE, dependendo da lógica
+                }
+            }
+
+            sendCommand(deviceId, command, params);
             closeModal();
         }
 
-        function changeLampColor(deviceId, color) {
-            console.log(`Alterar cor do dispositivo ${deviceId} para ${color}`);
-            // Implemente a chamada ao backend para alterar a cor da lâmpada
+        async function sendCommand(deviceId, command, params = []) {
+            try {
+                const response = await fetch("/control_device", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        device_id: deviceId,
+                        name: command,
+                        params: params,
+                    }),
+                });
+
+                if (response.ok) {
+                    alert("Comando enviado com sucesso!");
+                    loadDevices(); // Recarrega a lista de dispositivos para refletir as mudanças
+                } else {
+                    alert("Erro ao enviar comando.");
+                }
+            } catch (error) {
+                console.error("Erro ao enviar comando:", error);
+                alert("Erro ao enviar comando.");
+            }
         }
 
-        function changeTemperature(deviceId, temperature) {
-            console.log(`Alterar temperatura do dispositivo ${deviceId} para ${temperature}`);
-            // Implemente a chamada ao backend para alterar a temperatura
+        function toggleDevice(deviceId) {
+            const device = currentDevice;
+            const command = device.status.powered_on ? "TURN_OFF" : "TURN_ON";
+            sendCommand(deviceId, command);
         }
 
         function toggleTeamDetails() {
@@ -772,10 +717,8 @@
 
         document.querySelector(".sidebar-list-item:nth-child(1) a").addEventListener("click", showReadme);
         document.querySelector(".sidebar-list-item:nth-child(2) a").addEventListener("click", showDevices);
-
         loadDevices();
         setInterval(loadDevices, 60000);
     </script>
 </body>
-
 </html>

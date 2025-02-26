@@ -8,7 +8,6 @@ from proto import grpc_pb2
 from proto import grpc_pb2_grpc
 import json
 
-
 class RemoteDeviceServicer(grpc_pb2_grpc.RemoteDeviceServicer):
     def __init__(self, device):
         super()
@@ -16,7 +15,6 @@ class RemoteDeviceServicer(grpc_pb2_grpc.RemoteDeviceServicer):
         self.device = device
 
     def SendMessage(self, request, context):
-        # Lógica para o método SendMessage
         print("Device", self.device.get_short_id(), "Recebou uma mensagem")
         if request.name == "TURN_ON":
             print("Ligando o radio de id " + self.device.get_short_id())
@@ -39,7 +37,6 @@ class RemoteDeviceServicer(grpc_pb2_grpc.RemoteDeviceServicer):
         )
 
         return response
-
 
 class Radio:
     def __init__(
@@ -85,7 +82,7 @@ class Radio:
                             "device_id": self.device_id,
                             "name": self.name,
                             "device_type": self.type,
-                            "message_type": "TEMPERATURE_REPORT",
+                            "message_type": "STATUS_REPORT",
                             "status": {
                                 "powered_on": self.powered_on,
                                 "playing_music": self.playing_music,
@@ -137,7 +134,6 @@ class Radio:
         self.server.stop(0)
         listen_messages.join()
         send_status_thread.join()
-
 
 name = input("Digite o nome do dispositivo: (Ex: Radio da Sala): ") or "Radio"
 

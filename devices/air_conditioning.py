@@ -16,7 +16,6 @@ class RemoteDeviceServicer(grpc_pb2_grpc.RemoteDeviceServicer):
         self.device = device
 
     def SendMessage(self, request, context):
-        # Lógica para o método SendMessage
         print("Device", self.device.get_short_id(), "Recebou uma mensagem")
         if request.name == "TURN_ON":
             print("Ligando o ar condicionado de id " + self.device.get_short_id())
